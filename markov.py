@@ -8,6 +8,7 @@ class MarkovChain():
     def __init__(self, parsed_text):
         self.chain = {}
 
+        words_count = 0
         for i in range(len(parsed_text) - 2):
             word1 = parsed_text[i]
             word2 = parsed_text[i+1]
@@ -21,6 +22,9 @@ class MarkovChain():
                     self.chain[pair][product] = 1  # start the count at 1
             else:  # pair had not been seen yet, create it
                 self.chain[pair] = { product: 1 }
+            words_count += 1
+
+        print 'words: ' + str(words_count)
 
 
     def generate_text(self, word_count=100):
@@ -34,15 +38,18 @@ class MarkovChain():
         sys.stdout.write(pair)
 
         for _i in range(word_count):
-            highest_product = ''
+            #highest_product = ''
             if pair in self.chain:
-                highest_product_count = 0
+                random_product_number = \
+                    random.randint(0, len(self.chain[pair])-1)
+                product_count = 0
                 for product in self.chain[pair]:
-                    if self.chain[pair][product] > highest_product_count:
-                        highest_product = product
-                        highest_product_count = self.chain[pair][product]
-                pair = pair.split()[1] + ' ' + highest_product
-                sys.stdout.write(' ' + product)
+                    if product_count == random_product_number:
+                        selected_product = product
+                        break
+                    product_count += 1
+                pair = pair.split(' ')[1] + ' ' + selected_product
+                sys.stdout.write(' ' + selected_product)
         sys.stdout.write('\n')
 
 
