@@ -38,7 +38,8 @@ class MarkovChain():
         sys.stdout.write(pair)
 
         for _i in range(word_count):
-            #highest_product = ''
+            if '!' in pair or '?' in pair or '.' in pair:
+                break
             if pair in self.chain:
                 random_product_number = \
                     random.randint(0, len(self.chain[pair])-1)
